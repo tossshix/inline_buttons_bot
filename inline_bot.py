@@ -9,10 +9,26 @@ API_TOKEN: str = config.tg_bot.token
 bot: Bot = Bot(API_TOKEN)
 dp: Dispatcher = Dispatcher()
 
-url_button_1: InlineKeyboardButton = InlineKeyboardButton(text='Курс телеграмм боты на Python и AIOgram',
-                                                          url='https://stepik.org/120924')
-url_button_2: InlineKeyboardButton = InlineKeyboardButton(text='Документация Telegram Bot API',
-                                                          url='https://core.telegram.org/bots/api')
+big_button_1: InlineKeyboardButton = InlineKeyboardButton(
+    text='БОЛЬШАЯ КНОПКА 1',
+    callback_data='big_button_pressed')
+
+big_button_2: InlineKeyboardButton = InlineKeyboardButton(
+    text='БОЛЬШАЯ КНОПКА 2',
+    callback_data='big_button_pressed')
+
+keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(
+    inline_keyboard=[[big_button_1],
+                     [big_button_2]])
+
+
+@dp.message(CommandStart())
+async def process_command_start(message: Message):
+    await message.answer(text='Это инлайн-кнопки, нажми на любую', reply_markup=keyboard)
+
+
+if __name__ == '__main__':
+    dp.run_polling(bot)
 
 keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(
     inline_keyboard=[[url_button_1],
